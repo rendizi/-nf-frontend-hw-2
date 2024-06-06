@@ -8,12 +8,14 @@ const TaskList = (props) => {
       <>
           {props.filter === 'all' &&
 props.tasks.map(item => (
-          <TaskItem key={item.id} item={item} setTasks={props.setTasks} tasks={props.tasks}/>
+          <TaskItem key={item.id} item={item} setTasks={props.setTasks} tasks={props.tasks} handleDeleteTask={props.handleDeleteTask} handleToggleTask={props.handleToggleTask}/>
         )) || props.filter === 'completed' &&
               props.tasks.map(item => (
-                  item.completed === true && <TaskItem key={item.id} item={item} setTasks={props.setTasks} tasks={props.tasks}/>
+                  item.completed === true &&           <TaskItem key={item.id} item={item} setTasks={props.setTasks} tasks={props.tasks} handleDeleteTask={props.handleDeleteTask} handleToggleTask={props.handleToggleTask}/>
+
               )) || props.tasks.map(item => (
-                  item.completed === false && <TaskItem key={item.id} item={item} setTasks={props.setTasks} tasks={props.tasks}/>
+                  item.completed === false &&          <TaskItem key={item.id} item={item} setTasks={props.setTasks} tasks={props.tasks} handleDeleteTask={props.handleDeleteTask} handleToggleTask={props.handleToggleTask}/>
+
               ))
           }
       </>

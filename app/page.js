@@ -6,9 +6,48 @@ import TaskList from "@/app/components/TaskList";
 const task = {id: 1, text: "Todo Test", completed: false}
 
 export default function Home() {
-  const [tasks, setTasks] = React.useState([]); // rewrite using states
+  const [tasks, setTasks] = React.useState(() => {
+        try {
+            const stored = JSON.parse(localStorage.getItem("tasks"));
+            return stored ? stored : [];
+        } catch (error) {
+            console.log("Failed to parse tasks from localStorage:", error);
+            return [];
+        }
+    });
+
+    React.useEffect(() => {
+        try {
+            const stored = JSON.parse(localStorage.getItem("tasks"));
+            if (stored) {
+                setTasks(stored);
+            }
+        } catch (error) {
+            console.log("Failed to parse tasks from localStorage:", error);
+        }
+    }, []);
+
+    React.useEffect(() => {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }, [tasks]);
+// rewrite using states
   const [filter, setFilter] = React.useState('all'); // rewrite using states
   const [taskText, setTaskText] = React.useState('')
+
+
+
+    const handleToggleTask = (Id) => {
+        setTasks(tasks.map(task => task.id == Id
+            ? {...task, completed: !task.completed}
+            : task))
+
+    };
+
+    const handleDeleteTask = (index) => {
+        setTasks(oldVals => {
+            return oldVals.filter((_,i) => i !== index)
+        })
+    };
 
 
   const handleAddTask = () => {
@@ -45,7 +84,7 @@ export default function Home() {
         </button>
       </div>
       <div className="bg-gray-800 rounded p-4">
-       <TaskList tasks={tasks} setTasks={setTasks} filter={filter}/>
+       <TaskList tasks={tasks} setTasks={setTasks} filter={filter} handleToggleTask={handleToggleTask} handleDeleteTask={handleDeleteTask}/>
         <div className="mt-4 flex justify-between items-center text-sm text-gray-400">
           <span> {tasks.filter(task => !task.completed).length} items left</span> {/* show how many uncompleted items left */}
           <div>

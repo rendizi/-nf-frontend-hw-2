@@ -1,19 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
 
-const TaskItem = ({item, setTasks, tasks}) => {
-    const handleToggleTask = (Id) => {
-        setTasks(tasks.map(task => task.id == Id
-            ? {...task, completed: !task.completed}
-            : task))
+const TaskItem = ({item, setTasks, tasks, handleToggleTask, handleDeleteTask}) => {
 
-    };
-
-    const handleDeleteTask = (index) => {
-        setTasks(oldVals => {
-            return oldVals.filter((_,i) => i !== index)
-        })
-    };
   // Component that shows each TaskItem
   return (
       <ul>
